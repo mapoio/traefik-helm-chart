@@ -1,25 +1,21 @@
-# Default values for Traefik
-image:
-  name: traefik
-  tag: 2.1.1
-
-#
-# Configure the deployment
-#
-deployment:
-  # Number of pods of the deployment
-  replicas: 1
-
-rollingUpdate:
-  maxUnavailable: 1
-  maxSurge: 1
 
 #
 # Configure Traefik entry points
 # Additional arguments to be passed at Traefik's binary
 ## Use curly braces to pass values: `helm install --set="{--providers.kubernetesingress,--global.checknewversion=true}" ."
-additionalArguments: []
-#  - "--providers.kubernetesingress"
+additionalArguments:
+  - "--providers.kubernetesingress"
+  - "--api.dashboard=true"
+  - "--api.insecure=true"
+  - "--api"
+  - "--accesslog"
+  - "--certificatesresolvers.default.acme.dnsChallenge=true"
+  - "--certificatesresolvers.default.acme.dnschallenge.provider=alidns"
+  - "--certificatesresolvers.default.acme.email=zengjiean@huas.edu.gr"
+  - "--certificatesresolvers.default.acme.domains=*.mapo.io"
+  - "--certificatesresolvers.default.acme.storage=/letsencrypt/acme.json"
+
+
 
 #
 ports:
@@ -37,13 +33,17 @@ ports:
     # The exposed port for this service
     exposedPort: 9000
   web:
-    port: 8000
+    port: 80
     expose: true
     exposedPort: 80
   websecure:
-    port: 8443
+    port: 443
     expose: true
     exposedPort: 443
+  ssh:
+    port: 22
+    expose: true
+    exposedPort: 22
 
 # Options for the main traefik service, where the entrypoints traffic comes
 # from.
