@@ -1,4 +1,18 @@
+# Default values for Traefik
+image:
+  name: traefik
+  tag: 2.1.1
 
+#
+# Configure the deployment
+#
+deployment:
+  # Number of pods of the deployment
+  replicas: 1
+
+rollingUpdate:
+  maxUnavailable: 1
+  maxSurge: 1
 #
 # Configure Traefik entry points
 # Additional arguments to be passed at Traefik's binary
